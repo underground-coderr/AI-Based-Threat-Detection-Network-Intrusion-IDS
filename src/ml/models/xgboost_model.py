@@ -43,13 +43,13 @@ class XGBModel:
 
     def predict_single(self, features: np.ndarray) -> dict:
         proba = self.predict_proba(features.reshape(1, -1))[0]
-        pred  = int(np.argmax(proba))
+        pred  = int(np.argmax(proba))
         names = self.class_names or [str(i) for i in range(len(proba))]
         label = names[pred] if pred < len(names) else f"class_{pred}"
         return {
-            "prediction":       pred,
-            "label":            label,
-            "confidence":       float(proba[pred]),
+            "prediction":        pred,
+            "label":             label,
+            "confidence":        float(proba[pred]),
             "is_attack":         label != "BENIGN",
             "all_probabilities": {
                 names[i]: float(p) for i, p in enumerate(proba)
