@@ -34,7 +34,7 @@ Complete installation and usage guide for ThreatNet.
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/ai-threat-detection.git
+git clone https://github.com/underground-coderr/ai-threat-detection.git
 cd ai-threat-detection
 ```
 
