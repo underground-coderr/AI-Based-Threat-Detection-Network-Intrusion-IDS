@@ -23,7 +23,7 @@ of Random Forest, XGBoost, and LSTM models — served through a REST API with a 
 ## What Is This Project
 
 ThreatNet is a full-stack AI security system that detects network intrusions in real time.
-It ingests network flow data — statistical summaries of network connections — and classifies
+It ingests network flow data, statistical summaries of network connections and classifies
 them as either benign traffic or one of 7 attack types using an ensemble of three machine
 learning models. Detected threats are stored, scored by severity, and visualized on a
 live React dashboard.
@@ -42,7 +42,7 @@ This project was built for two purposes:
 Traditional signature-based IDS tools like Snort can only detect known attacks by matching
 traffic against a fixed rule database. They fail completely against zero-day exploits and
 novel attack variants. AI-based detection learns the statistical fingerprint of attack
-behavior from real data — making it capable of flagging attacks it has never explicitly seen.
+behavior from real data making it capable of flagging attacks it has never explicitly seen.
 
 ### Attacks Detected
 
@@ -63,30 +63,30 @@ behavior from real data — making it capable of flagging attacks it has never e
 ┌─────────────────────────────────────────────────────────────┐
 │                        DATA LAYER                           │
 │                                                             │
-│  CICIDS2017 (2.3M flows) → Preprocessor → 77 Features      │
+│  CICIDS2017 (2.3M flows) → Preprocessor → 77 Features       │
 └───────────────────────────────┬─────────────────────────────┘
                                 │
 ┌───────────────────────────────▼─────────────────────────────┐
 │                         ML LAYER                            │
 │                                                             │
-│  ┌──────────────┐  ┌─────────────┐  ┌───────────────────┐  │
-│  │ Random Forest│  │   XGBoost   │  │       LSTM        │  │
-│  │   F1: 0.996  │  │  F1: 0.937  │  │    F1: 0.983      │  │
-│  └──────┬───────┘  └──────┬──────┘  └─────────┬─────────┘  │
-│         └────────────────▼──────────────────┘             │
+│  ┌──────────────┐  ┌─────────────┐  ┌───────────────────┐   │
+│  │ Random Forest│  │   XGBoost   │  │       LSTM        │   │
+│  │   F1: 0.996  │  │  F1: 0.937  │  │    F1: 0.983      │   │
+│  └──────┬───────┘  └──────┬──────┘  └─────────┬─────────┘   │
+│         └────────────────▼──────────────────┘               │
 │                  Ensemble Voting Engine                     │
 └───────────────────────────────┬─────────────────────────────┘
                                 │
 ┌───────────────────────────────▼─────────────────────────────┐
 │                        API LAYER                            │
 │                                                             │
-│   FastAPI :8000  →  Detection Engine  →  SQLite Database   │
+│   FastAPI :8000  →  Detection Engine  →  SQLite Database    │
 └───────────────────────────────┬─────────────────────────────┘
                                 │
 ┌───────────────────────────────▼─────────────────────────────┐
 │                     DASHBOARD LAYER                         │
 │                                                             │
-│   React :5173  →  Live Charts  →  Alerts  →  Detect UI    │
+│   React :5173  →  Live Charts  →  Alerts  →  Detect UI      │
 └─────────────────────────────────────────────────────────────┘
 ```
 
