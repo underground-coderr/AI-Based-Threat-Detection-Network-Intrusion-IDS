@@ -11,20 +11,21 @@ from src.utils.config import settings
 from src.utils.logger import logger
 
 LABEL_MAP = {
-    "BENIGN": "BENIGN",
-    "DoS Hulk": "DoS",
-    "DoS GoldenEye": "DoS",
-    "DoS slowloris": "DoS",
-    "DoS Slowhttptest": "DoS",
-    "DDoS": "DDoS",
-    "PortScan": "PortScan",
-    "FTP-Patator": "BruteForce",
-    "SSH-Patator": "BruteForce",
-    "Bot": "Bot",
-    "Web Attack - Brute Force": "WebAttack",
-    "Web Attack - XSS": "WebAttack",
-    "Web Attack - Sql Injection": "WebAttack",
-    "Infiltration": "Infiltration",
+    "Benign":                      "BENIGN",
+    "DoS Hulk":                    "DoS",
+    "DoS GoldenEye":               "DoS",
+    "DoS slowloris":               "DoS",
+    "DoS Slowhttptest":            "DoS",
+    "Heartbleed":                  "DoS",
+    "DDoS":                        "DDoS",
+    "PortScan":                    "PortScan",
+    "FTP-Patator":                 "BruteForce",
+    "SSH-Patator":                 "BruteForce",
+    "Bot":                         "Bot",
+    "Web Attack \ufffd Brute Force": "WebAttack",
+    "Web Attack \ufffd XSS":         "WebAttack",
+    "Web Attack \ufffd Sql Injection":"WebAttack",
+    "Infiltration":                "Infiltration",
 }
 
 DROP_COLS = [
@@ -34,19 +35,25 @@ DROP_COLS = [
 
 
 def load_raw() -> pd.DataFrame:
-    raw_dir = settings.data_raw_dir
-    csv_files = sorted(raw_dir.glob("*.csv"))
+    raw_dir  = settings.data_raw_dir
+    parquets = sorted(raw_dir.glob("*.parquet"))
+    csvs     = sorted(raw_dir.glob("*.csv"))
 
-    if not csv_files:
+    files = parquets if parquets else csvs
+
+    if not files:
         raise FileNotFoundError(
-            "No CSV files found in data/raw/. "
+            "No data files found in data/raw/. "
             "Run: python -m src.data.downloader"
         )
 
-    logger.info(f"Loading {len(csv_files)} CSV file(s)...")
+    logger.info(f"Loading {len(files)} file(s)...")
     dfs = []
-    for f in tqdm(csv_files, desc="Loading"):
-        df = pd.read_csv(f, low_memory=False)
+    for f in tqdm(files, desc="Loading"):
+        if f.suffix == ".parquet":
+            df = pd.read_parquet(f)
+        else:
+            df = pd.read_csv(f, low_memory=False)
         df.columns = df.columns.str.strip()
         dfs.append(df)
         logger.info(f"  {f.name}: {len(df):,} rows")
